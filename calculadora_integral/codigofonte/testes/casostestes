@@ -1,7 +1,7 @@
 import math
 
 def calcular_integral(funcao_texto, a, b, tolerancia=0.000001):
-    """Função que calcula a integral ( mesma do arquivo principal )"""
+    """ Função que calcula a integral """
     n = 100
     resultado_anterior = 0
     
@@ -28,7 +28,7 @@ def calcular_integral(funcao_texto, a, b, tolerancia=0.000001):
     return soma
 
 def testar_casos():
-    """Testa automaticamente os 5 casos exigidos"""
+    """ testa automaticamente os 5 casos """
     
     casos_teste = [
         {
@@ -73,7 +73,7 @@ def testar_casos():
         }
     ]
     
-    print("🧪 TESTANDO 5 CASOS SIMPLIFICADOS")
+    print(" Teste dos 5 casos simplificados ")
     print("=" * 50)
     
     for i, teste in enumerate(casos_teste, 1):
@@ -90,13 +90,13 @@ def testar_casos():
             print(f"Diferença: {diferenca:.6f}")
             
             if diferenca < teste['tolerancia']:
-                print("✅ STATUS: APROVADO")
+                print(" APROVADO")
             else:
-                print("❌ STATUS: REPROVADO")
+                print(" REPROVADO")
                 print(f"   Esperado: {teste['esperado']}, Obtido: {resultado:.6f}")
                 
         except Exception as e:
-            print(f"❌ ERRO: {e}")
+            print(f" ERRO: {e}")
         
         print("-" * 40)
 
