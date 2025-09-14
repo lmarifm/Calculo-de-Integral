@@ -1,0 +1,74 @@
+import math
+
+print()
+print("Digite a função usando:")
+print("- x como variável")
+print("- ** para potência (ex: x**2)")
+print("- math.funcao() para funções (ex: math.sin(x))")
+print()
+
+#pede a função e o intervalo
+funcao_texto = input("Digite f(x): ")
+a = float(input("Digite o início do intervalo (a): "))
+b = float(input("Digite o fim do intervalo (b): "))
+
+# tolerância fixa com base no video do youtube do professor: 1e-6
+tolerancia = 0.000001
+
+print()
+print(" CONFIGURAÇÃO: ")
+print(f" Função: f(x) = {funcao_texto}")
+print(f" Intervalo: [{a}, {b}]")
+print(f" Tolerância fixa: {tolerancia}")
+print()
+
+# área de teste se a função é válida
+print(" Testando a função...")
+try:
+    x_teste = 1.0
+    resultado_teste = eval(funcao_texto, {"math": math, "x": x_teste})
+    print(f" Função válida! f({x_teste}) = {resultado_teste}")
+    
+    # parte do cálculo de integral 
+    print("\n Calculando a integral...")
+    
+    n = 100  # começa com 100 retângulos
+    resultado_anterior = 0
+    convergiu = False
+    
+    for tentativa in range(15):  # limite de 15 tentativas
+        largura = (b - a) / n
+        soma = 0
+        
+        # calculo da área de cada retângulo
+        for i in range(n):
+            x = a + (i + 0.5) * largura  # ponto médio do retângulo
+            altura = eval(funcao_texto, {"math": math, "x": x})
+            soma += altura * largura
+        
+        # verificação se atingiu a precisão desejada
+        if tentativa > 0:
+            diferenca = abs(soma - resultado_anterior)
+            print(f"• Com {n} retângulos: resultado = {soma:.8f}")
+            
+            if diferenca < tolerancia:
+                convergiu = True
+                break
+        
+        resultado_anterior = soma
+        n *= 2  # duplica o número de retângulos
+    
+    # output do resultado final
+    print("\n" + "="*50)
+    if convergiu:
+        print(f" Convergiu! Resultado final: {soma:.8f}")
+        print(f"Precisão de {tolerancia} atingida com {n} retângulos")
+    else:
+        print(f" Melhor resultado: {soma:.8f}")
+        print(f"Usando {n} retângulos")
+    
+except Exception as e:
+    print(f" Erro: {e}")
+    print("Verifique se digitou a função corretamente.")
+
+

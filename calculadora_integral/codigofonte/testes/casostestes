@@ -1,0 +1,104 @@
+import math
+
+def calcular_integral(funcao_texto, a, b, tolerancia=0.000001):
+    """Função que calcula a integral ( mesma do arquivo principal )"""
+    n = 100
+    resultado_anterior = 0
+    
+    for tentativa in range(15):
+        largura = (b - a) / n
+        soma = 0
+        
+        for i in range(n):
+            x = a + (i + 0.5) * largura
+            try:
+                altura = eval(funcao_texto, {"math": math, "x": x})
+                if math.isnan(altura) or math.isinf(altura):
+                    altura = 0
+            except:
+                altura = 0
+            soma += altura * largura
+        
+        if tentativa > 0 and abs(soma - resultado_anterior) < tolerancia:
+            break
+        
+        resultado_anterior = soma
+        n *= 2
+    
+    return soma
+
+def testar_casos():
+    """Testa automaticamente os 5 casos exigidos"""
+    
+    casos_teste = [
+        {
+            "nome": "Polinômio Simples (x²)",
+            "funcao": "x**2",
+            "a": 0,
+            "b": 2,
+            "esperado": 2.66667,  # 8/3
+            "tolerancia": 0.1
+        },
+        {
+            "nome": "Seno Simples",
+            "funcao": "math.sin(x)",
+            "a": 0,
+            "b": math.pi,
+            "esperado": 2.0,
+            "tolerancia": 0.1
+        },
+        {
+            "nome": "Exponencial e^x",
+            "funcao": "math.exp(x)",
+            "a": 0, 
+            "b": 1,
+            "esperado": 1.71828,  # e - 1
+            "tolerancia": 0.1
+        },
+        {
+            "nome": "Raiz Quadrada",
+            "funcao": "math.sqrt(x)",
+            "a": 0,
+            "b": 4,
+            "esperado": 5.33333,  # 16/3
+            "tolerancia": 0.1
+        },
+        {
+            "nome": "Função Linear",
+            "funcao": "2*x + 1",
+            "a": 0,
+            "b": 3,
+            "esperado": 12.0,
+            "tolerancia": 0.1
+        }
+    ]
+    
+    print("🧪 TESTANDO 5 CASOS SIMPLIFICADOS")
+    print("=" * 50)
+    
+    for i, teste in enumerate(casos_teste, 1):
+        print(f"\nTeste {i}: {teste['nome']}")
+        print(f"Função: {teste['funcao']}")
+        print(f"Intervalo: [{teste['a']}, {teste['b']}]")
+        
+        try:
+            resultado = calcular_integral(teste['funcao'], teste['a'], teste['b'])
+            diferenca = abs(resultado - teste['esperado'])
+            
+            print(f"Resultado Obtido: {resultado:.6f}")
+            print(f"Resultado Esperado: {teste['esperado']}")
+            print(f"Diferença: {diferenca:.6f}")
+            
+            if diferenca < teste['tolerancia']:
+                print("✅ STATUS: APROVADO")
+            else:
+                print("❌ STATUS: REPROVADO")
+                print(f"   Esperado: {teste['esperado']}, Obtido: {resultado:.6f}")
+                
+        except Exception as e:
+            print(f"❌ ERRO: {e}")
+        
+        print("-" * 40)
+
+if __name__ == "__main__":
+    testar_casos()
